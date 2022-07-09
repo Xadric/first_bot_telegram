@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Random;
 
 class MySuperBot extends TelegramLongPollingBot{
+    List list = new ArrayList();
+    int f =0;
     public void onUpdateReceived(Update update){
         var message = update.getMessage().getText();
         var chatId = update.getMessage().getChatId();
@@ -26,11 +28,39 @@ class MySuperBot extends TelegramLongPollingBot{
         try {
 
 
-            if (message.equals("Hello")){
+
+            if (f==1){
+                f=0;
+                list.add(message);
+                sendMassage(chatId,"added");
+                sendMassage(chatId,"I can add position in the list (/add)\n I can delete position from the list(/delete) \n I can view your list (/viewList)");
+
+            } else if (f == 2) {
+                f=0;
+                list.remove(Integer.parseInt(message)-1);
+                sendMassage(chatId,"deleted");
+                sendMassage(chatId,"I can add position in the list (/add)\n I can delete position from the list(/delete) \n I can view your list (/viewList)");
+
+            } else if (message.equals("Hello")){
                 sendPhoto(chatId,"hello.png");
-                sendMassage(chatId, "I can send a photo (/sendPhoto) \n");
+                sendMassage(chatId, "I can send a photo (/sendPhoto) \n I can create a shopping list (/shoppingList)");
             } else if (message.equals("/sendPhoto")) {
                 sendPhoto(chatId,random.nextInt(4)+".jpg");
+            } else if (message.equals("/shoppingList")) {
+
+                sendMassage(chatId,"I can add position in the list (/add)\n I can delete position from the list(/delete) \n I can view your list (/viewList)");
+            } else if (message.equals("/add")) {
+                sendMassage(chatId,"name");
+                f=1;
+            } else if (message.equals("/delete")) {
+                sendMassage(chatId,"index");
+                f=2;
+            } else if (message.equals("/viewList")) {
+                for (int i = 0; i < list.size(); i++) {
+                    sendMassage(chatId,(i+1) +")"+ list.get(i));
+                }
+                sendMassage(chatId,"I can add position in the list (/add)\n I can delete position from the list(/delete) \n I can view your list (/viewList)");
+
             } else{
                 sendMassage(chatId, "??????????");
             }
@@ -40,6 +70,8 @@ class MySuperBot extends TelegramLongPollingBot{
 
 
     }
+
+
 
     void sendMassage(long chatId, String text) throws Exception{
         var massege = new SendMessage();
