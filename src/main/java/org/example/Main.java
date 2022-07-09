@@ -9,12 +9,15 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
+import java.util.Random;
+
 class MySuperBot extends TelegramLongPollingBot{
     public void onUpdateReceived(Update update){
         var massage = update.getMessage().getText();
         var chatId = update.getMessage().getChatId();
         System.out.println(massage);
         try {
+            if massage.equals()
             sendMassage(chatId,"Hello");
             sendPhoto(chatId);
         } catch (Exception e) {
@@ -32,7 +35,8 @@ class MySuperBot extends TelegramLongPollingBot{
     }
 
     void sendPhoto(long chatId) throws Exception{
-        var photo = getClass().getClassLoader().getResourceAsStream("0.jpg");
+        var name = new Random().nextInt(2);
+        var photo = getClass().getClassLoader().getResourceAsStream(name+".jpg");
 
         var message = new SendPhoto();
         message.setChatId(String.valueOf(chatId));
