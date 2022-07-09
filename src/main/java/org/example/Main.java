@@ -3,6 +3,8 @@ package org.example;
 import org.telegram.telegrambots.bots.*;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
@@ -14,6 +16,7 @@ class MySuperBot extends TelegramLongPollingBot{
         System.out.println(massage);
         try {
             sendMassage(chatId,"Hello");
+            sendPhoto(chatId);
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -27,6 +30,16 @@ class MySuperBot extends TelegramLongPollingBot{
         massege.setText(text);
         execute(massege);
     }
+
+    void sendPhoto(long chatId) throws Exception{
+        var photo = getClass().getClassLoader().getResourceAsStream("0.jpg");
+
+        var message = new SendPhoto();
+        message.setChatId(String.valueOf(chatId));
+        message.setPhoto(new InputFile(photo, "photo"));
+        execute(message);
+    }
+
 
     public String getBotUsername(){
         return "@first673_bot";
